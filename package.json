@@ -2,6 +2,7 @@
   "name": "aws-ip-find-location",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,7 +10,8 @@
   "author": "Sagi Iltus",
   "license": "ISC",
   "dependencies": {
-    "ip-range-check": "0.0.2",
+    "axios": "^1.2.2",
+    "ip-range-check": "^0.2.0",
     "yargs": "^17.6.2"
   }
 }

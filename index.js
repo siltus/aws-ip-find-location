@@ -1,7 +1,9 @@
-const fs = require('fs')
-const argv = require('yargs').argv
-const ipRangeCheck = require("ip-range-check");
-const net = require('net')
+import yargs from 'yargs'
+import check_many_cidrs from 'ip-range-check' 
+import net from 'net'
+import axios from 'axios'
+
+let argv = yargs(process.argv.slice(2)).argv
 
 if (argv.ip == undefined) {
     console.log('usage:')
@@ -9,19 +11,22 @@ if (argv.ip == undefined) {
     process.exit(1)
 }
 
-const aws_ips_file_content = fs.readFileSync('aws-ip-ranges-json/ip-ranges.json')
-const aws_ips = JSON.parse(aws_ips_file_content);
+const aws_ips_official = await axios.get(
+    `https://ip-ranges.amazonaws.com/ip-ranges.json`
+);
+
+const aws_ips = aws_ips_official.data;
 
 if (net.isIPv4(argv.ip)) {
     aws_ips.prefixes.forEach(element => {
-        if (ipRangeCheck(argv.ip, element.ip_prefix)) {
+        if (check_many_cidrs(argv.ip, element.ip_prefix)) {
             console.log(element);
             process.exit(0)
         }
      });     
 } else if (net.isIPv6(argv.ip)) {
     aws_ips.ipv6_prefixes.forEach(element => {
-        if (ipRangeCheck(argv.ip, element.ipv6_prefix)) {
+        if (check_many_cidrs(argv.ip, element.ipv6_prefix)) {
             console.log(element);
             process.exit(0)
         }
