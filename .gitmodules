@@ -1,3 +1,0 @@
-[submodule "aws-ip-ranges-json"]
-	path = aws-ip-ranges-json
-	url = https://github.com/joetek/aws-ip-ranges-json.git
